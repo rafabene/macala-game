@@ -1,4 +1,4 @@
-package com.rafabene.macala.domain;
+package com.rafabene.mancala.domain;
 
 public enum GameStatus {
     NOT_RUNNING,

@@ -1,4 +1,4 @@
-package com.rafabene.macala.domain;
+package com.rafabene.mancala.domain;
 
 import java.util.Objects;
 

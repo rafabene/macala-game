@@ -1,7 +1,7 @@
-package com.rafabene.macala.web.output;
+package com.rafabene.mancala.web.output;
 
-import com.rafabene.macala.domain.Game;
-import com.rafabene.macala.domain.Player;
+import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.Player;
 
 /**
  * Representes the output from the websockt to the game

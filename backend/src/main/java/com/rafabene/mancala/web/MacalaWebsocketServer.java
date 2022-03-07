@@ -1,4 +1,4 @@
-package com.rafabene.macala.web;
+package com.rafabene.mancala.web;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -13,13 +13,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import com.rafabene.macala.domain.Game;
-import com.rafabene.macala.domain.IllegalGameStageException;
-import com.rafabene.macala.domain.Player;
-import com.rafabene.macala.web.input.InputDecoder;
-import com.rafabene.macala.web.input.WebsocketInput;
-import com.rafabene.macala.web.output.OutputEncoder;
-import com.rafabene.macala.web.output.WebsocketOutput;
+import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.IllegalGameStageException;
+import com.rafabene.mancala.domain.Player;
+import com.rafabene.mancala.web.input.InputDecoder;
+import com.rafabene.mancala.web.input.WebsocketInput;
+import com.rafabene.mancala.web.output.OutputEncoder;
+import com.rafabene.mancala.web.output.WebsocketOutput;
 
 @ServerEndpoint(value = "/game", encoders = OutputEncoder.class, decoders = { InputDecoder.class })
 public class MacalaWebsocketServer {

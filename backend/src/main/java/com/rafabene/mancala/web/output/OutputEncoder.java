@@ -1,4 +1,4 @@
-package com.rafabene.macala.web.output;
+package com.rafabene.mancala.web.output;
 
 import java.util.logging.Logger;
 

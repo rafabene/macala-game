@@ -1,4 +1,4 @@
-package com.rafabene.macala.web.input;
+package com.rafabene.mancala.web.input;
 
 public enum InputOperation {
     START_GAME,
