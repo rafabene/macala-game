@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Macala Game</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <h1>
+        Welcome to Macala game
+    </h1>
+    <h3 id="message"></h3>
+    <div id="game-information">
+        <div>Game Status:
+            <span id="gameStatus"></span>
+        </div>
+        <div>Player 1: 
+            <span id="player1"></span>
+        </div>
+        <div>Player 2: 
+            <span id="player2"></span>
+        </div>
+    </div>
+    <div id="game-control">
+        <button id="startGame">Start Game</button>
+        <button id="resetGame">Reset</button>
+    </div>
+    <hr>
+    <h2>Board</h2>
+    <table id="board">
+        <tr id="othePits" class="otherBoard">
+            <td id="otherMacala" rowspan="2">0</td>
+            <td id="o1">6</td>
+            <td id="o2">6</td>
+            <td id="o3">6</td>
+            <td id="o4">6</td>
+            <td id="o5">6</td>
+            <td id="o6">6</td>
+            <td id="myMacala" rowspan="2" class="myBoard">
+                0
+            </td>
+        </tl>
+        <tr id="myPits" class="myBoard">
+            <td><button id="1" disabled>6</button></td>
+            <td><button id="2" disabled>6</button></td>
+            <td><button id="3" disabled>6</button></td>
+            <td><button id="4" disabled>6</button></td>
+            <td><button id="5" disabled>6</button></td>
+            <td><button id="6" disabled>6</button></td>
+        </tl>
+        
+
+    </table>
+
+</body>
+
+</html>

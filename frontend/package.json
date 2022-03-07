@@ -1,0 +1,34 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the Macala game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rafabene/macala-game.git"
+  },
+  "keywords": [
+    "macala",
+    "game",
+    "microprofile",
+    "node",
+    "nodejs",
+    "java"
+  ],
+  "author": "Rafael Benevides",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/rafabene/macala-game/issues"
+  },
+  "homepage": "https://github.com/rafabene/macala-game#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
