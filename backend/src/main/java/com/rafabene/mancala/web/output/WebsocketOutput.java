@@ -45,12 +45,12 @@ public class WebsocketOutput {
         }
     }
 
-    public int getCurrentPlayerMacala() {
+    public int getCurrentPlayerMancala() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
-            return game.getBoard().getPlayer1Macala();
+            return game.getBoard().getPlayer1Mancala();
         } else {
-            return game.getBoard().getPlayer2Macala();
+            return game.getBoard().getPlayer2Mancala();
         }
     }
 
@@ -63,12 +63,12 @@ public class WebsocketOutput {
         }
     }
 
-    public int getOpponentPlayerMacala() {
+    public int getOpponentPlayerMancala() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
-            return game.getBoard().getPlayer2Macala();
+            return game.getBoard().getPlayer2Mancala();
         } else {
-            return game.getBoard().getPlayer1Macala();
+            return game.getBoard().getPlayer1Mancala();
         }
     }
 

@@ -51,25 +51,25 @@ function updateGameScreen(gameInput) {
     gameStatusDiv.innerHTML = gameData.game.gameStatus;
 
     // Opponent Board
-    let otherMacala = document.getElementById("otherMacala")
-    otherMacala.innerHTML = gameData.opponentPlayerMacala
+    let othermancala = document.getElementById("otherMancala")
+    othermancala.innerHTML = gameData.opponentPlayerMancala
 
-    let otherPits = document.getElementById("othePits").innerHTML
+    let otherPits = document.getElementById("othePits").children
     let count = 0;
     for (let td of otherPits) {
-        if (td.id !== "otherMacala") {
+        if (td.id !== "otherMancala") {
             td.innerHTML = gameData.opponentPlayerPits[count++]
         }
     }
 
     // Current Player Board
-    let myPits = document.getElementById("othePits").innerHTML
+    let myPits = document.getElementById("myPits").children
     count = 0;
     for (let td of myPits) {
-        td.innerHTML = gameData.currentPlayerPits[count++]
+       td.children[0].innerHTML = gameData.currentPlayerPits[count++]
     }
-    let myMacala = document.getElementById("myMacala")
-    myMacala.innerHTML = gameData.currentPlayerMacala
+    let mymancala = document.getElementById("myMancala")
+    mymancala.innerHTML = gameData.currentPlayerMancala
 
     //Buttons control
     let startGameButton = document.getElementById("startGame")
@@ -79,7 +79,6 @@ function updateGameScreen(gameInput) {
 
         // Control Player buttons
         let playerTurn = isPlayerTurn(gameData.currentPlayer);
-        console.log(playerTurn)
         
         let myButtons = getUserButtons()
         for (let button of myButtons) {

@@ -74,8 +74,15 @@ public class MacalaWebsocketServer {
                     game.startGame();
                     notifySessions("Game Started");
                     break;
-                default:
-            }                
+                case SEED:
+                    game.move(Integer.valueOf(input.getParameter()));
+                    notifySessions(String.format("Player %s has moved. It's now player %s turn", session.getId(), game.getPlayerTurn().getGamerId()));                
+                    break;
+                case RESET_GAME:
+                    game.getBoard().reset();
+                    notifySessions("Game restarted!!!!");
+                    break;
+            }
         } catch (IllegalGameStageException e) {
             notifySession(session, e.getMessage());
         }

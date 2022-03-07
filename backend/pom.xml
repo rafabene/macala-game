@@ -28,7 +28,7 @@
         <relativePath/>
     </parent>
     <groupId>com.rafabene</groupId>
-    <artifactId>macala-game</artifactId>
+    <artifactId>mancala-game</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>myproject</name>
 

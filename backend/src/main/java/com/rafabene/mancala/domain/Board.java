@@ -7,8 +7,8 @@ public class Board {
 
     private int[] player1Pits;
     private int[] player2Pits;
-    private int player1Macala;
-    private int player2Macala;
+    private int player1Mancala;
+    private int player2Mancala;
 
     public Board() {
         reset();
@@ -18,8 +18,8 @@ public class Board {
         Config config = ConfigProvider.getConfig();
         int stonesQuantity = config.getValue("stonesQuantity", Integer.class);
         int pitsQuantity = config.getValue("pitsQuantity", Integer.class);
-        player1Macala = 0;
-        player2Macala = 0;
+        player1Mancala = 0;
+        player2Mancala = 0;
         player1Pits = new int[pitsQuantity];
         player2Pits = new int[pitsQuantity];
         for(int x=0; x < pitsQuantity; x++){
@@ -36,12 +36,20 @@ public class Board {
         return player2Pits;
     }
 
-    public int getPlayer1Macala() {
-        return this.player1Macala;
+    public void setPlayer1Mancala(int player1Mancala) {
+        this.player1Mancala = player1Mancala;
     }
 
-    public int getPlayer2Macala() {
-        return this.player2Macala;
+    public int getPlayer1Mancala() {
+        return this.player1Mancala;
+    }
+    
+    public void setPlayer2Mancala(int player2Mancala) {
+        this.player2Mancala = player2Mancala;
+    }
+
+    public int getPlayer2Mancala() {
+        return this.player2Mancala;
     }
 
     @Override
@@ -49,8 +57,8 @@ public class Board {
         return "{" +
                 " player1Pits='" + getPlayer1Pits() + "'" +
                 ", player2Pits='" + getPlayer2Pits() + "'" +
-                ", player1Macala='" + getPlayer1Macala() + "'" +
-                ", player2Macala='" + getPlayer2Macala() + "'" +
+                ", player1Macala='" + getPlayer1Mancala() + "'" +
+                ", player2Macala='" + getPlayer2Mancala() + "'" +
                 "}";
     }
 
