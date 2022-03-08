@@ -55,7 +55,7 @@ public class MacalaWebsocketServer {
         logger.info("Session diconnected: " + sessionId);
         boolean wasPlaying = game.removePlayer(new Player(sessionId));
         String message = wasPlaying ? String.format("Player %s disconnected", sessionId) : "";
-        // Notify all sesssions
+        // Notify all sesssions only if the the player was playing
         notifySessions(message);
     }
 
@@ -69,14 +69,15 @@ public class MacalaWebsocketServer {
     public void handleMessage(WebsocketInput input, Session session) {
         logger.info("Received input: " + input + " from session " + session.getId());
         try {
-            switch (input.getOperation()){
-                case START_GAME: 
+            switch (input.getOperation()) {
+                case START_GAME:
                     game.startGame();
                     notifySessions("Game Started");
                     break;
                 case SEED:
                     game.move(Integer.valueOf(input.getParameter()));
-                    notifySessions(String.format("Player %s has moved. It's now player %s turn", session.getId(), game.getPlayerTurn().getGamerId()));                
+                    notifySessions(String.format("Player %s has moved. It's now player %s turn", session.getId(),
+                            game.getPlayerTurn().getGamerId()));
                     break;
                 case RESET_GAME:
                     game.reset();

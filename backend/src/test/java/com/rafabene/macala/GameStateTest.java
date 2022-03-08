@@ -48,8 +48,8 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus());
                 Assertions.assertNotNull(game.getBoard(), "Board should exist");
                 Board board = game.getBoard();
-                Assertions.assertEquals(0, board.getPlayer1Mancala(), "Player 1 Macala should be 0");
-                Assertions.assertEquals(0, board.getPlayer2Mancala(), "Player 2 Macala should be 0");
+                Assertions.assertEquals(0, board.getPlayer1Mancala().getContent(), "Player 1 Macala should be 0");
+                Assertions.assertEquals(0, board.getPlayer2Mancala().getContent(), "Player 2 Macala should be 0");
                 int[] player1Pits = board.getPlayer1Pits();
                 int[] player2Pits = board.getPlayer1Pits();
                 Assertions.assertEquals(pitsQuantity, player1Pits.length, "Player 1 Macala should have the right number of pits");
@@ -75,6 +75,7 @@ class GameStateTest {
                         Assertions.fail("Can't start the game");
                 } catch (IllegalGameStageException e) {
                         // Expected to fail
+                        Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
@@ -87,6 +88,7 @@ class GameStateTest {
                         Assertions.fail("Can't start the game");
                 } catch (IllegalGameStageException e) {
                         // Expected to fail
+                        Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
@@ -103,6 +105,21 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running");
         }
 
+        @Test
+        public void testStartWith2PlayersTwice() {
+                try {
+                        game.addNewPlayer(player1);
+                        game.addNewPlayer(player2);
+                        game.startGame();
+                        game.startGame();
+                        Assertions.fail("Can't start twice");
+                } catch (IllegalGameStageException e) {
+                        // Expected to Fail
+                        Assertions.assertNotNull(e);
+                }
+                Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running even starting twice");
+        }
+
         public void addThirdPlayer() {
                 try {
                         game.addNewPlayer(player1);
@@ -111,6 +128,7 @@ class GameStateTest {
                         Assertions.fail("Can't add a third player");
                 } catch (IllegalGameStageException e) {
                         // Expected to fail
+                        Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
@@ -127,6 +145,7 @@ class GameStateTest {
                         Assertions.assertNull(game.getPlayerTurn(), "We don't have someone's turn for a stoped game");
                 } catch (IllegalGameStageException e) {
                         // Expected to fail
+                        Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running after stoped");
         }
