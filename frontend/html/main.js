@@ -55,10 +55,10 @@ function updateGameScreen(gameInput) {
     othermancala.innerHTML = gameData.opponentPlayerMancala
 
     let otherPits = document.getElementById("othePits").children
-    let count = 0;
+    let count = 5;
     for (let td of otherPits) {
         if (td.id !== "otherMancala") {
-            td.innerHTML = gameData.opponentPlayerPits[count++]
+            td.innerHTML = gameData.opponentPlayerPits[count--]
         }
     }
 

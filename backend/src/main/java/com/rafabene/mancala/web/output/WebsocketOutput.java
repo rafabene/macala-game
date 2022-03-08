@@ -48,9 +48,9 @@ public class WebsocketOutput {
     public int getCurrentPlayerMancala() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
-            return game.getBoard().getPlayer1Mancala();
+            return game.getBoard().getPlayer1Mancala().getContent();
         } else {
-            return game.getBoard().getPlayer2Mancala();
+            return game.getBoard().getPlayer2Mancala().getContent();
         }
     }
 
@@ -66,9 +66,9 @@ public class WebsocketOutput {
     public int getOpponentPlayerMancala() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
-            return game.getBoard().getPlayer2Mancala();
+            return game.getBoard().getPlayer2Mancala().getContent();
         } else {
-            return game.getBoard().getPlayer1Mancala();
+            return game.getBoard().getPlayer1Mancala().getContent();
         }
     }
 
@@ -80,5 +80,5 @@ public class WebsocketOutput {
         }
         return null;
     }
-
+    
 }

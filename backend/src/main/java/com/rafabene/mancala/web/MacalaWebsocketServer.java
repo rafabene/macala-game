@@ -79,7 +79,7 @@ public class MacalaWebsocketServer {
                     notifySessions(String.format("Player %s has moved. It's now player %s turn", session.getId(), game.getPlayerTurn().getGamerId()));                
                     break;
                 case RESET_GAME:
-                    game.getBoard().reset();
+                    game.reset();
                     notifySessions("Game restarted!!!!");
                     break;
             }

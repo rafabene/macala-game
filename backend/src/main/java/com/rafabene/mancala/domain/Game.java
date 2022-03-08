@@ -3,6 +3,8 @@ package com.rafabene.mancala.domain;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
+import javax.json.bind.annotation.JsonbTransient;
+
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 
@@ -24,6 +26,11 @@ public class Game {
     // Can't be instantiated
     private Game() {
 
+    }
+
+    public void reset(){
+        playerTurn = players[0];
+        board.reset();
     }
 
     public static Game getInstance() {
@@ -76,14 +83,15 @@ public class Game {
         int pitPosition = pit - 1;
         int stones = getPlayerTurnPits()[pitPosition];
         getPlayerTurnPits()[pitPosition] = 0;
-        int[] walkableBoard = createWalkableBoard(); 
-        logger.info(Arrays.toString(walkableBoard));
+        int[] walkableBoard = getWalkableBoard(); 
         for (int x = 1; x <= stones; x++){
             // Circular position
             int walkableBoardPosition = (int) (pitPosition + x) % walkableBoard.length;
-            walkableBoard[walkableBoardPosition]++;
+            // Skip other player's Mancala
+            if (walkableBoardPosition != walkableBoard.length - 1){
+                walkableBoard[walkableBoardPosition]++;
+            }
         }
-        logger.info(Arrays.toString(walkableBoard));
         fillBoard(walkableBoard);
         changePlayerTurn();
     }
@@ -98,13 +106,15 @@ public class Game {
     }
 
     private void fillBoard(int[] walkableBoard) {
+        logger.info(Arrays.toString(walkableBoard));
         int pitsQuantity = getPitsQuantity();
         for(int x = 0; x < pitsQuantity; x++){
             getPlayerTurnPits()[x] = walkableBoard[x];
-            getOtherPlayerPits()[x] = walkableBoard[x + pitsQuantity];
+            //  +1 to skip Player's  Mancala
+            getOtherPlayerPits()[x] = walkableBoard[x + pitsQuantity + 1];
         }
-        board.setPlayer1Mancala(walkableBoard[pitsQuantity] + board.getPlayer1Mancala());
-        board.setPlayer2Mancala(walkableBoard[(pitsQuantity * 2)] + board.getPlayer2Mancala());
+        getPlayerTurnMancala().setContent(walkableBoard[pitsQuantity]);
+        getOtherPlayerMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
     }
 
     /**
@@ -116,17 +126,19 @@ public class Game {
      * It's formed by player1Pits + playerMacala + player2Pits + player2Mancala
      * @return
      */
-    private int[] createWalkableBoard() {
+    @JsonbTransient
+    public int[] getWalkableBoard() {
         int pitsQuantity = getPitsQuantity();
         int[] walkableBoard = new int[(pitsQuantity  * 2) + 2];
         for(int x = 0; x < pitsQuantity; x++){
             walkableBoard[x] = getPlayerTurnPits()[x];
-            // +1 is needed to skip Player's Macala on the last position
+            // +1 is needed to skip Player's Mancala on the last position
             walkableBoard[x + pitsQuantity + 1] = getOtherPlayerPits()[x];
         }
-        walkableBoard[pitsQuantity] = getPlayerTurnMancala();
+        walkableBoard[pitsQuantity] = getPlayerTurnMancala().getContent();
         // Last positon
-        walkableBoard[walkableBoard.length - 1] = getOtherPlayerMancala();
+        walkableBoard[walkableBoard.length - 1] = getOtherPlayerMancala().getContent();
+        logger.info(Arrays.toString(walkableBoard));
         return walkableBoard;
     }
 
@@ -152,7 +164,7 @@ public class Game {
         }
     }
 
-    private int getPlayerTurnMancala() {
+    private Mancala getPlayerTurnMancala() {
         if (getPlayerTurn().equals(players[0])) {
             return board.getPlayer1Mancala();
         } else {
@@ -160,11 +172,11 @@ public class Game {
         }
     }
 
-    private int getOtherPlayerMancala() {
+    private Mancala getOtherPlayerMancala() {
         if (getPlayerTurn().equals(players[0])) {
-            return board.getPlayer1Mancala();
-        } else {
             return board.getPlayer2Mancala();
+        } else {
+            return board.getPlayer1Mancala();
         }
     }
 
