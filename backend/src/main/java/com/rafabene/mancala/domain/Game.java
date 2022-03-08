@@ -5,17 +5,21 @@ import org.eclipse.microprofile.config.ConfigProvider;
 
 public class Game {
 
+    private static Game instance;
+
     private Player[] players = new Player[2];
 
     private Board internalBoard = new Board();
 
     private GameStatus gameStatus = GameStatus.NOT_RUNNING;
 
-    private static Game instance;
-
     private Player playerTurn;
 
-    // Can't be instantiated
+    /**
+     * This is a singleton class. Please use the method
+     * 
+     * @see getInstance() to get a Game instance
+     */
     private Game() {
 
     }
@@ -45,11 +49,26 @@ public class Game {
         playerTurn = null;
     }
 
+    /**
+     * Reset the board, and return the player turn to player1.
+     */
     public void reset() {
         playerTurn = players[0];
         getBoard().reset();
     }
 
+    /**
+     * Seed the stones in the pit informed in the parameter.
+     * 
+     * The player turn will be updated according to Mancala's rule.
+     * 
+     * @param pit position of the pit: 1 to pitsQuantity
+     * @throws IllegalGameMoveException  if the pit informed is greatter than
+     *                                   pitsQuantiy.
+     * @throws IllegalGameStateException if the game is not running
+     * 
+     * @see GameStatus
+     */
     public void move(int pit) throws IllegalGameMoveException, IllegalGameStateException {
         if (!gameStatus.equals(GameStatus.RUNNING)) {
             throw new IllegalGameStateException("Can't move if the game hasn't began. ");
@@ -201,7 +220,7 @@ public class Game {
         }
 
         /**
-         * Get the walkable board in the format of 
+         * Get the walkable board in the format of
          * [p1, p1, p1, p1, mancala1, p2, p2, p2, p2, mancala2]
          * 
          * and place the proper falues in the fields of the internal Board.
@@ -213,7 +232,7 @@ public class Game {
                 // +1 to skip Player's Mancala
                 getOpponentPits()[x] = walkableBoard[x + pitsQuantity + 1];
             }
-            // Player  Mancala
+            // Player Mancala
             getPlayerTurnMancala().setContent(walkableBoard[pitsQuantity]);
             // Last position for Opponents Mancala
             getOpponentMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
@@ -235,7 +254,7 @@ public class Game {
             }
         }
 
-        private Mancala getPlayerTurnMancala() {
+        private BoardMancala getPlayerTurnMancala() {
             if (getPlayerTurn().equals(players[0])) {
                 return internalBoard.getPlayer1Mancala();
             } else {
@@ -243,7 +262,7 @@ public class Game {
             }
         }
 
-        private Mancala getOpponentMancala() {
+        private BoardMancala getOpponentMancala() {
             if (getPlayerTurn().equals(players[0])) {
                 return internalBoard.getPlayer2Mancala();
             } else {

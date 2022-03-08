@@ -7,8 +7,8 @@ public class Board {
 
     private int[] player1Pits;
     private int[] player2Pits;
-    private Mancala player1Mancala;
-    private Mancala player2Mancala;
+    private BoardMancala player1Mancala;
+    private BoardMancala player2Mancala;
 
     public Board() {
         reset();
@@ -18,8 +18,8 @@ public class Board {
         Config config = ConfigProvider.getConfig();
         int stonesQuantity = config.getValue("stonesQuantity", Integer.class);
         int pitsQuantity = config.getValue("pitsQuantity", Integer.class);
-        player1Mancala = new Mancala();
-        player2Mancala = new Mancala();
+        player1Mancala = new BoardMancala();
+        player2Mancala = new BoardMancala();
         player1Pits = new int[pitsQuantity];
         player2Pits = new int[pitsQuantity];
         for(int x=0; x < pitsQuantity; x++){
@@ -36,12 +36,12 @@ public class Board {
         return player2Pits;
     }
 
-    public Mancala getPlayer1Mancala() {
+    public BoardMancala getPlayer1Mancala() {
         return this.player1Mancala;
     }
     
 
-    public Mancala getPlayer2Mancala() {
+    public BoardMancala getPlayer2Mancala() {
         return this.player2Mancala;
     }
 

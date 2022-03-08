@@ -17,6 +17,7 @@ public class OutputEncoder implements Encoder.Text<WebsocketOutput> {
     @Override
     public void init(EndpointConfig config) {
         JsonbConfig jsonbConfig = new JsonbConfig()
+                // Formating will help the frontend designer
                 .withFormatting(true);
 
         // Create Jsonb with custom configuration

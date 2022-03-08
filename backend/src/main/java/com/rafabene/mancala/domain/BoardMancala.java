@@ -1,6 +1,6 @@
 package com.rafabene.mancala.domain;
 
-public class Mancala {
+public class BoardMancala {
 
     private int content;
 

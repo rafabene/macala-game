@@ -8,16 +8,6 @@ public class WebsocketInput {
     // To be used for any parameter for the action
     private String parameter;
 
-    /** Empty constrcutor needed by the  Websocke t Encoder/Decoder */
-    public WebsocketInput() {
-
-    }
-
-    public WebsocketInput(InputOperation operation, String parameter) {
-        this.operation = operation;
-        this.parameter = parameter;
-    }
-
     public InputOperation getOperation() {
         return this.operation;
     }
