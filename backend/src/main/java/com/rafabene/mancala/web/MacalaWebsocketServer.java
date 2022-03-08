@@ -14,7 +14,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.rafabene.mancala.domain.Game;
-import com.rafabene.mancala.domain.IllegalGameStageException;
+import com.rafabene.mancala.domain.IllegalGameStateException;
 import com.rafabene.mancala.domain.Player;
 import com.rafabene.mancala.web.input.InputDecoder;
 import com.rafabene.mancala.web.input.WebsocketInput;
@@ -41,7 +41,7 @@ public class MacalaWebsocketServer {
             logger.info("New player connected: " + newPlayer);
             // Message for all sessions
             notifySessions(message);
-        } catch (IllegalGameStageException e) {
+        } catch (IllegalGameStateException e) {
             message = e.getMessage();
             // Message only for this session
             notifySession(session, message);
@@ -54,7 +54,7 @@ public class MacalaWebsocketServer {
         String sessionId = session.getId();
         logger.info("Session diconnected: " + sessionId);
         boolean wasPlaying = game.removePlayer(new Player(sessionId));
-        String message = wasPlaying ? String.format("Player %s disconnected", sessionId) : "";
+        String message = wasPlaying ? String.format("Player %s disconnected. Game Stopped!", sessionId) : "";
         // Notify all sesssions only if the the player was playing
         notifySessions(message);
     }
@@ -84,7 +84,7 @@ public class MacalaWebsocketServer {
                     notifySessions("Game restarted!!!!");
                     break;
             }
-        } catch (IllegalGameStageException e) {
+        } catch (Exception e) {
             notifySession(session, e.getMessage());
         }
     }

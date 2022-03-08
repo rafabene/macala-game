@@ -7,7 +7,7 @@ public class Game {
 
     private Player[] players = new Player[2];
 
-    private Board board = new Board();
+    private Board internalBoard = new Board();
 
     private GameStatus gameStatus = GameStatus.NOT_RUNNING;
 
@@ -27,16 +27,16 @@ public class Game {
         return instance;
     }
 
-    public void startGame() throws IllegalGameStageException {
+    public void startGame() throws IllegalGameStateException {
         if (gameStatus.equals(GameStatus.RUNNING)) {
-            throw new IllegalGameStageException("Game is already running!");
+            throw new IllegalGameStateException("Game is already running!");
         }
         if (players[0] != null && players[1] != null) {
-            board.reset();
+            getBoard().reset();
             playerTurn = players[0];
             gameStatus = GameStatus.RUNNING;
         } else {
-            throw new IllegalGameStageException("We can't start the game without 2 players");
+            throw new IllegalGameStateException("We can't start the game without 2 players");
         }
     }
 
@@ -47,14 +47,19 @@ public class Game {
 
     public void reset() {
         playerTurn = players[0];
-        board.reset();
+        getBoard().reset();
     }
 
-    public void move(int pit) {
+    public void move(int pit) throws IllegalGameMoveException, IllegalGameStateException {
+        if (!gameStatus.equals(GameStatus.RUNNING)) {
+            throw new IllegalGameStateException("Can't move if the game hasn't began. ");
+        }
         WalkableBoard walkableBoard = new WalkableBoard();
-        walkableBoard.move(pit);
-        walkableBoard.fillBoard();
-        changePlayerTurn();
+        boolean playAgain = walkableBoard.move(pit);
+        // If player shouldn't play again
+        if (!playAgain) {
+            changePlayerTurn();
+        }
     }
 
     private void changePlayerTurn() {
@@ -65,10 +70,9 @@ public class Game {
         }
     }
 
- 
-    public void addNewPlayer(Player newPlayer) throws IllegalGameStageException {
+    public void addNewPlayer(Player newPlayer) throws IllegalGameStateException {
         if (players[0] != null && players[1] != null) {
-            throw new IllegalGameStageException("There are two players at this moment. Retry later.");
+            throw new IllegalGameStateException("There are two players at this moment. Retry later.");
         } else if (players[0] == null) {
             players[0] = newPlayer;
 
@@ -77,9 +81,9 @@ public class Game {
         }
     }
 
-       /**
+    /**
      * 
-     * @param player
+     * @param player Player to be removed
      * @return true if player was playing. False otherwise
      */
     public boolean removePlayer(Player player) {
@@ -95,7 +99,6 @@ public class Game {
         return false;
     }
 
-
     @Override
     public String toString() {
         return "{" +
@@ -107,7 +110,7 @@ public class Game {
     }
 
     public Board getBoard() {
-        return board;
+        return internalBoard;
     }
 
     public Player[] getPlayers() {
@@ -126,14 +129,14 @@ public class Game {
      * 
      * An Walkable board contains an array in the following format:
      * 
-     * [p1, p1, p1, p1, macala1, p2, p2, p2, p2, macala2]
+     * [p1, p1, p1, p1, mancala1, p2, p2, p2, p2, mancala2]
      * 
-     * It's formed by player1Pits + playerMacala + player2Pits + player2Mancala
+     * It's formed by player1Pits + player1Mancala + player2Pits + player2Mancala
      * 
      * This instance should be used for each move
      * 
      */
-    class WalkableBoard {
+    private class WalkableBoard {
 
         private int[] walkableBoard;
 
@@ -148,69 +151,103 @@ public class Game {
             for (int x = 0; x < pitsQuantity; x++) {
                 walkableBoard[x] = getPlayerTurnPits()[x];
                 // +1 is needed to skip Player's Mancala on the last position
-                walkableBoard[x + pitsQuantity + 1] = getOtherPlayerPits()[x];
+                walkableBoard[x + pitsQuantity + 1] = getOpponentPits()[x];
             }
             walkableBoard[pitsQuantity] = getPlayerTurnMancala().getContent();
             // Last positon
-            walkableBoard[walkableBoard.length - 1] = getOtherPlayerMancala().getContent();
+            walkableBoard[walkableBoard.length - 1] = getOpponentMancala().getContent();
         }
 
-        public void move(int pit) {
+        /**
+         * Seed the stones in the pit informed in the parameter.
+         * 
+         * @param pit position of the pit: 1 to pitsQuantity
+         * @return true if the last positon is in current's player board
+         * @throws IllegalGameMoveException if the pit informed is greatter than
+         *                                  pitsQuantiy.
+         */
+        public boolean move(int pit) throws IllegalGameMoveException {
+            int pitsQuantity = getPitsQuantity();
             int pitPosition = pit - 1;
-            int stones = walkableBoard[pitPosition];
-            walkableBoard[pitPosition] = 0;
-            for (int x = 1; x <= stones; x++) {
-                // Circular position
-                int walkableBoardPosition = (int) (pitPosition + x) % walkableBoard.length;
-                // Skip other player's Mancala
-                if (walkableBoardPosition != walkableBoard.length - 1) {
-                    walkableBoard[walkableBoardPosition]++;
-                }
+            if (pit < 1 || pit > pitsQuantity) {
+                throw new IllegalGameMoveException(String
+                        .format("Can't move pit %s because each player has only %s pits", pitPosition, pitsQuantity));
             }
+            // Number of stones in the pit
+            int stones = walkableBoard[pitPosition];
+            // Remove all stones in the pit
+            walkableBoard[pitPosition] = 0;
+            int walkableBoardPosition = 0;
+            while (stones >= 0) {
+                // Go to next pit
+                pitPosition++;
 
+                // Circular position
+                walkableBoardPosition = (int) (pitPosition) % walkableBoard.length;
+
+                // Skip opponnent's Mancala
+                if (walkableBoardPosition == walkableBoard.length - 1) {
+                    continue;
+                }
+
+                // Add a stone to the Pit
+                walkableBoard[walkableBoardPosition]++;
+                stones--;
+
+            }
+            fillInternalBoard();
+            // Return true if we are in our side of the board after moving (pits + mancala)
+            return walkableBoardPosition <= pitsQuantity + 1;
         }
 
-        private void fillBoard() {
+        /**
+         * Get the walkable board in the format of 
+         * [p1, p1, p1, p1, mancala1, p2, p2, p2, p2, mancala2]
+         * 
+         * and place the proper falues in the fields of the internal Board.
+         */
+        private void fillInternalBoard() {
             int pitsQuantity = getPitsQuantity();
             for (int x = 0; x < pitsQuantity; x++) {
                 getPlayerTurnPits()[x] = walkableBoard[x];
                 // +1 to skip Player's Mancala
-                getOtherPlayerPits()[x] = walkableBoard[x + pitsQuantity + 1];
+                getOpponentPits()[x] = walkableBoard[x + pitsQuantity + 1];
             }
+            // Player  Mancala
             getPlayerTurnMancala().setContent(walkableBoard[pitsQuantity]);
-            // Last position
-            getOtherPlayerMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
+            // Last position for Opponents Mancala
+            getOpponentMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
         }
 
         private int[] getPlayerTurnPits() {
             if (getPlayerTurn().equals(players[0])) {
-                return board.getPlayer1Pits();
+                return internalBoard.getPlayer1Pits();
             } else {
-                return board.getPlayer2Pits();
+                return internalBoard.getPlayer2Pits();
             }
         }
 
-        private int[] getOtherPlayerPits() {
+        private int[] getOpponentPits() {
             if (getPlayerTurn().equals(players[0])) {
-                return board.getPlayer2Pits();
+                return internalBoard.getPlayer2Pits();
             } else {
-                return board.getPlayer1Pits();
+                return internalBoard.getPlayer1Pits();
             }
         }
 
         private Mancala getPlayerTurnMancala() {
             if (getPlayerTurn().equals(players[0])) {
-                return board.getPlayer1Mancala();
+                return internalBoard.getPlayer1Mancala();
             } else {
-                return board.getPlayer2Mancala();
+                return internalBoard.getPlayer2Mancala();
             }
         }
 
-        private Mancala getOtherPlayerMancala() {
+        private Mancala getOpponentMancala() {
             if (getPlayerTurn().equals(players[0])) {
-                return board.getPlayer2Mancala();
+                return internalBoard.getPlayer2Mancala();
             } else {
-                return board.getPlayer1Mancala();
+                return internalBoard.getPlayer1Mancala();
             }
         }
 

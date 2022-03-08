@@ -6,7 +6,8 @@ import javax.inject.Inject;
 import com.rafabene.mancala.domain.Board;
 import com.rafabene.mancala.domain.Game;
 import com.rafabene.mancala.domain.GameStatus;
-import com.rafabene.mancala.domain.IllegalGameStageException;
+import com.rafabene.mancala.domain.IllegalGameMoveException;
+import com.rafabene.mancala.domain.IllegalGameStateException;
 import com.rafabene.mancala.domain.Player;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -73,7 +74,7 @@ class GameStateTest {
                 try {
                         game.startGame();
                         Assertions.fail("Can't start the game");
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         // Expected to fail
                         Assertions.assertNotNull(e);
                 }
@@ -86,7 +87,7 @@ class GameStateTest {
                         game.addNewPlayer(player1);
                         game.startGame();
                         Assertions.fail("Can't start the game");
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         // Expected to fail
                         Assertions.assertNotNull(e);
                 }
@@ -99,7 +100,7 @@ class GameStateTest {
                         game.addNewPlayer(player1);
                         game.addNewPlayer(player2);
                         game.startGame();
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         Assertions.fail("Could not fail");
                 }
                 Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running");
@@ -113,26 +114,28 @@ class GameStateTest {
                         game.startGame();
                         game.startGame();
                         Assertions.fail("Can't start twice");
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         // Expected to Fail
                         Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running even starting twice");
         }
 
+        @Test
         public void addThirdPlayer() {
                 try {
                         game.addNewPlayer(player1);
                         game.addNewPlayer(player2);
                         game.addNewPlayer(player3);
                         Assertions.fail("Can't add a third player");
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         // Expected to fail
                         Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
 
+        @Test
         public void testPlayerTurn(){
                 try {
                         Assertions.assertNull(game.getPlayerTurn(), "We don't have someone's turn for a stoped game");
@@ -143,10 +146,20 @@ class GameStateTest {
                         Assertions.assertEquals(player1, game.getPlayerTurn(), "Player 1 starts the game");
                         game.stopGame();
                         Assertions.assertNull(game.getPlayerTurn(), "We don't have someone's turn for a stoped game");
-                } catch (IllegalGameStageException e) {
+                } catch (IllegalGameStateException e) {
                         // Expected to fail
                         Assertions.assertNotNull(e);
                 }
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running after stoped");
+        }
+
+        @Test
+        public void testGameMoveWithoutStart(){
+                try {
+                        game.move(1);
+                        Assertions.fail("Should not be able to move. Game is stopped");
+                } catch (IllegalGameMoveException | IllegalGameStateException e) {
+                        Assertions.assertNotNull(e, "Move not allowed. Game is stopped");
+                }
         }
 }

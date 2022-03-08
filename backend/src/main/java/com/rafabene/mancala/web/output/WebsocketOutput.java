@@ -17,11 +17,6 @@ public class WebsocketOutput {
     // The current Websocket session Id
     private String currentSessionId;
 
-    /** Empty constrcutor needed by the  Websocke t Encoder/Decoder */
-    public WebsocketOutput(){
-        
-    }
-
     public WebsocketOutput(String sessionId, Game game, String message) {
         this.currentSessionId = sessionId;
         this.game = game;

@@ -3,6 +3,7 @@ let socket = new WebSocket("ws://localhost:8080/game")
 let gameData
 socket.onmessage = onMessage
 socket.onclose = serverDisconnected
+socket.onerror = serverDisconnected
 
 function onMessage(event) {
     console.log(event.data)
@@ -106,10 +107,12 @@ function getPlayerString(player, currentPlayer) {
             // We need to understand who is who
             if (player.gamerId === currentPlayer.gamerId) {
                 playerDetail = " - (YOU)"
-                if (isGameRunning() && isPlayerTurn(player)) {
-                    playerTurn = " - YOUR TURN!!!"
-                } else {
-                    playerTurn = " - WAIT"
+                if (isGameRunning()) {
+                    if (isPlayerTurn(player)) {
+                        playerTurn = " - YOUR TURN!!!"
+                    } else {
+                        playerTurn = " - WAIT. It's other player's turn"
+                    }
                 }
             } else {
                 playerDetail = " - (OPPONENT)"
