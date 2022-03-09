@@ -26,6 +26,14 @@ public class Player {
         return gamesLoose;
     }
 
+    public void wonGame(){
+        gamesWon++;
+    }
+
+    public void gameLost(){
+        gamesLoose++;
+    }
+
     public int getGamesWon() {
         return gamesWon;
     }

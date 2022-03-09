@@ -44,6 +44,9 @@ class GameStateTest {
                 game.stopGame();
         }
 
+        /**
+         * Test if the board has the right (zeroed) state in the beggining of the game
+         */
         @Test
         public void testGameNotRunning() {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus());
@@ -61,14 +64,21 @@ class GameStateTest {
                 }
         }
 
+        /**
+         * Test if the game starts with no player's and player turn.
+         */
         @Test
         public void testNoPlayers() {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should start as not running");
                 Assertions.assertNull(game.getPlayers()[0], "Game tests should not have players");
                 Assertions.assertNull(game.getPlayers()[1], "Game tests should not have players");
                 Assertions.assertNull(game.getPlayerTurn(), "Game tests should not have someone's turn");
+                Assertions.assertNull(game.getWinner(), "Game tests should not have a Winner yet");
         }
 
+        /**
+         * Test if we can't start the game without players
+         */
         @Test
         public void testStartWithoutPlayers() {
                 try {
@@ -81,6 +91,9 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
 
+        /**
+         * Test if we can't start the game with just one player.
+         */
         @Test
         public void testStartWith1Player() {
                 try {
@@ -94,6 +107,10 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
 
+
+        /**
+         * Test if we can only start the game with two players
+         */
         @Test
         public void testStartWith2Players() {
                 try {
@@ -106,6 +123,9 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running");
         }
 
+        /**
+         * Test if we can't start the game twice
+         */
         @Test
         public void testStartWith2PlayersTwice() {
                 try {
@@ -121,6 +141,10 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.RUNNING, game.getGameStatus(), "Game should be running even starting twice");
         }
 
+
+        /**
+         * Test if we can't add a third player
+         */
         @Test
         public void addThirdPlayer() {
                 try {
@@ -135,6 +159,9 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running");
         }
 
+        /**
+         * Test if the next player is correct after starting and stopping the game
+         */
         @Test
         public void testPlayerTurn(){
                 try {
@@ -153,6 +180,9 @@ class GameStateTest {
                 Assertions.assertEquals(GameStatus.NOT_RUNNING, game.getGameStatus(), "Game should not be running after stoped");
         }
 
+        /**
+         * Test if we can't move a piece with the game not running
+         */
         @Test
         public void testGameMoveWithoutStart(){
                 try {

@@ -122,7 +122,7 @@ function getPlayerString(player, currentPlayer) {
         let gamesLoose = player.gamesLoose
         let gamesPlayed = player.gamesPlayed
         let gamesWon = player.gamesWon
-        return `Player: ${id} {Won: ${gamesWon} | Loose: ${gamesLoose} | Played: ${gamesPlayed}} ${playerDetail} <span id="yourturn">${playerTurn}</span>`
+        return `Player: ${id} {Won: ${gamesWon} | Loose: ${gamesLoose} | Matches: ${gamesPlayed}} ${playerDetail} <span id="yourturn">${playerTurn}</span>`
     }
 }
 

@@ -36,12 +36,18 @@ class WebsocketOutputTest {
                 game.getBoard().getPlayer2Mancala().setContent(20);
         }
 
+        /**
+         * Test with we are able to get a message from the output
+         */
         @Test
         public void testMessage(){
                 WebsocketOutput websocketOutput = new WebsocketOutput("1", game, sample_message);
                 Assertions.assertEquals(sample_message, websocketOutput.getMessage(), "Published message should be the same");
         }
 
+        /**
+         * Test if the current player matche's the number of the session output
+         */
         @Test
         public void testCurrentPlayer(){
                 WebsocketOutput websocketOutput = new WebsocketOutput("1", game, sample_message);
@@ -49,6 +55,9 @@ class WebsocketOutputTest {
         }
 
 
+        /**
+         * Test if  the Current player is not the websocker viewer
+         */
         @Test
         public void testViewer(){
                 //Output for player 3
@@ -57,12 +66,22 @@ class WebsocketOutputTest {
         }
 
 
+        /**
+         * Test if the currentPlayer is based on the session number
+         * 
+         * @throws IllegalGameStateException
+         */
         @Test
         public void testCurrentPlayerMancala() throws IllegalGameStateException{
                 WebsocketOutput websocketOutput = new WebsocketOutput("1", game, sample_message);
                 Assertions.assertEquals(10, websocketOutput.getCurrentPlayerMancala(), "Mancala for player 1 should be 10");
         }
-
+        
+        /**
+         * Test if the opponent player is based on the session number
+         * 
+         * @throws IllegalGameStateException
+         */
         @Test
         public void testOpponentMancalas() throws IllegalGameStateException{
                 WebsocketOutput websocketOutput = new WebsocketOutput("1", game, sample_message);

@@ -14,6 +14,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.GameStatus;
 import com.rafabene.mancala.domain.IllegalGameStateException;
 import com.rafabene.mancala.domain.Player;
 import com.rafabene.mancala.web.input.InputDecoder;
@@ -76,13 +77,16 @@ public class MacalaWebsocketServer {
                     break;
                 case SEED:
                     game.move(Integer.valueOf(input.getParameter()));
-                    notifySessions(String.format("Player %s has moved. It's now player %s turn", session.getId(),
+                    notifySessions(String.format("Player %s has moved.<br/>It's now player %s turn", session.getId(),
                             game.getPlayerTurn().getGamerId()));
                     break;
                 case RESET_GAME:
-                    game.reset();
-                    notifySessions("Game restarted!!!!");
+                    game.getBoard().reset();
+                    notifySessions("Game restarted by " + session.getId());
                     break;
+            }
+            if (game.getGameStatus().equals(GameStatus.GAME_OVER)) {
+                notifySessions(String.format("GAME OVER. Player %s won!!!", game.getWinner().getGamerId()));
             }
         } catch (Exception e) {
             notifySession(session, e.getMessage());
