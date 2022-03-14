@@ -2,7 +2,7 @@
 Implementation of Macala game
 
 
-You can find some visual explanations of the game rules by running a [Google Search](https://www.google.com/search?q=manca+game) for Mancala or Kalaha game.
+You can find some visual explanations of the game rules by running a [Google Search](https://www.google.com/search?q=mancala+game) for Mancala or Kalaha game.
 
 This implementation uses to parts to work.
 
