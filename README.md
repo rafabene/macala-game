@@ -95,18 +95,20 @@ Yes, but this is a web Game, not an API to a Game. This disctinction needs to be
 Because it shows that the web technology doesn't matter as long as the domain is well abstracted.
 
 ### - Is this architecture suitable for `enterprise applications`?
-It dependds. There could be certain use cases that requires you to watch some business gauges near to real time. In that case Websockets is preferable than a REST API.
+It depends. There could be certain use cases that requires you to watch some business gauges near to real time. In that case Websockets is preferable than a REST API.
 
 ### - Where is your `Service` class?
 This implementation doesn't not need/use a service class as all the logic is part of the game class. There's no need to use it.
 
-    "When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless."
-
-    (Eric Evans Domain-Driven Design)
+>    "When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless."
+>
+>   (Eric Evans Domain-Driven Design)
 
 Furthermore, I suggest you to read the article about [Anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) from Martin Fowler.
 
-    "If all your logic is in services, you've robbed yourself blind". (Martin Fowler)
+ >   "If all your logic is in services, you've robbed yourself blind". 
+ >
+ > (Martin Fowler)
 
 
 ### - Why do you organized the `packages` that way?
