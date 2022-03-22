@@ -18,9 +18,9 @@ This help us to see that the web framework here is not important as long as you 
 
 ### 1.1 - Game domain
 
- Both web applications uses the game logic implemented with pure OOP.
+The game domain is a [separated project](./backends/game-domain/) that allows both backends to use the same game logic implemented with pure OOP.
 
- The only external dependency is the usage of the annotation [@JsonbTransient](https://javaee.github.io/javaee-spec/javadocs/javax/json/bind/annotation/JsonbTransient.html) to avoid the `internal board` from the [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class to be serialized to JSON.
+ The only external dependency in the game domain is the usage of the annotation [@JsonbTransient](https://javaee.github.io/javaee-spec/javadocs/javax/json/bind/annotation/JsonbTransient.html) to avoid the `internal board` from the [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class to be serialized to JSON.
 
  From Eric Evans's [excellent book Domain Driven Design](https://www.amazon.com/gp/product/0321125215/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321125215&linkCode=as2&tag=martinfowlerc-20):
 
