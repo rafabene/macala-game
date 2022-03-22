@@ -16,7 +16,7 @@ This help us to see that the web framework here is not important as long as you 
 
  - [Spring Boot Backend](./backends/springboot-backend/) - Implemented using [Spring Boot](https://spring.io/projects/spring-boot) and Websockets.
 
-### 1.1 - Game domain {#game-domain}
+### 1.1 - Game domain
 
  Both web applications uses the game logic implemented with pure OOP.
 
