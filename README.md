@@ -116,13 +116,13 @@ The *heart* of the software is in the [Game domain](#11-game-domain)
 
 There's no rule for packaging. You can have:
 
--  Package per feature - Example: The JDK itself (java.util, java.math, java.logging, java.net) - Where interfaces, exceptions and implementations live together.
+- *Package per feature* - Example: The JDK itself (java.util, java.math, java.logging, java.net) - Where interfaces, exceptions and implementations live together.
 
-- Package per layer - Where each application layer resides in a different package.
+- *Package per layer* - Where each application layer resides in a different package.
 
-- Package per type - This is the least used approach. It groups all different kinds of objects (Interfaces, Exceptions, Implementations, etc) in different packages.
+- *Package per type* - This is the least used approach. It groups all different kinds of objects (Interfaces, Exceptions, Implementations, etc) in different packages.
 
-The domain project user the `package per feature`. For more information read the following article: [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
+The domain project uses the `package per feature`. For more information, read the following article: [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
 ### - What if I need to add more features?
 
@@ -142,5 +142,7 @@ This is very welcomed!
 
 Software develpment is made through several iterations. Practices like [Refactoring](https://refactoring.com/) is useful to allow `"restructuring an existing body of code, altering its internal structure without changing its external behavior"`.
 
+> "Refactoring is your friend."
+
 ### - I have more questions.
-Please, contact me ;)
+Please, contact me. I don't byte! ;)
