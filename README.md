@@ -88,7 +88,7 @@ Once that both players are connected. Hit the `Start Game` button.
 ### - Why do you use Websockets?
 Because it's a game, and the state of the Game (and its pieces like Players, Board, etc) should be immediatly reflected for all players (and even viewers).
 
-The web UI (not matter what technology it uses), will always receive from the websocket, a JSON representation of the game state.
+The web UI (no matter what presentation technology it uses), will always receive from the websocket, a JSON representation of the game state.
 
 ### - Could you use REST?
 Yes, but this is a web Game, not an API to a Game. This disctinction needs to be very clear. 
