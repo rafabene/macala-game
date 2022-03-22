@@ -186,7 +186,7 @@ Software develpment is made through several iterations. Practices like [Refactor
 
 > "Refactoring is your friend." (Rafael Benevides)
 
-### - Does the game works?
+### - Does the game work?
 
 Absolutely! Try it!
 
