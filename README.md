@@ -123,5 +123,5 @@ There's no rule for packaging. You can have:
 
 The domain project user the `package per feature`. For more information read the following article: [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
-- ### I have more questions.
+### - I have more questions.
 Please, contact me ;)
