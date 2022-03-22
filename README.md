@@ -176,7 +176,7 @@ At this moment, no `Creational pattern` nor `Structural pattern` have been used.
 ### - And what about the [Java EE](http://www.corej2eepatterns.com/) `design patterns`? 
 
 - The [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class is a `Bussiness Object`. Please, read the definition of a [Business Object here](http://www.corej2eepatterns.com/BusinessObject.htm).
-- The `WebsocketOutput` and `WebsocketInput` are  [DTO](http://www.corej2eepatterns.com/TransferObject.htm)s  that transfer data elements to/from the `Application Tier` to the `View` Tier.
+- The `WebsocketOutput` and `WebsocketInput` are  [DTO](http://www.corej2eepatterns.com/TransferObject.htm)s  that transfer data elements to/from the `Application Tier` to the `View` tier.
 
 ### - What if I need to `improve the code`?
 
