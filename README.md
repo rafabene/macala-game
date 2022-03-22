@@ -150,13 +150,38 @@ There are some principles that supports a MVP:
  
  - [Lean Software Development](https://en.wikipedia.org/wiki/Lean_software_development)
 
+ However, if any additional feature is needed, it can be added when you need it.
+
+### - Why don't you have `repositories`?
+
+Because the requirement does not ask for any kind of persistence. There's no reason to implement persistence if it is not needed at this moment.
+
+Check the question about [additional features](#-what-if-i-need-to-improve-the-code) above.
+
+### - What are the `design patterns` used?
+
+"A design pattern is a general repeatable solution to a commonly occurring `problem` in software design."
+
+At this moment, no `Creational pattern` nor `Structural pattern` have been used.
+
+Regarding the `Behavioral patterns`, a `Command` pattern could be used in the Websocket server to encapsulate the user commands as an object.
+
+The websocket server could aso implement the `Observer pattern` if  there were other kind of objects listening for game changes. At this moment only `Websocket sessions` need to be notified. That's why the `Observer pattern` hasn't been used.
+
+No other `Behavioral pattern` seems to be needed.
+
+### - And what about the [Java EE](http://www.corej2eepatterns.com/) `design patterns`? 
+
+- The [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class is a `Bussiness Object`. Please, read the definition of a [Business Object here](http://www.corej2eepatterns.com/BusinessObject.htm).
+- The `WebsocketOutput` and `WebsocketInput` are  [DTO](http://www.corej2eepatterns.com/TransferObject.htm)s  that transfer data elements to/from the `Application Tier` to the `View` Tier.
+
 ### - What if I need to improve the code?
 
 This is very welcomed!
 
 Software develpment is made through several iterations. Practices like [Refactoring](https://refactoring.com/) is useful to allow `"restructuring an existing body of code, altering its internal structure without changing its external behavior"`.
 
-> "Refactoring is your friend."
+> "Refactoring is your friend." (Rafael Benevides)
 
 ### - Does the game works?
 
