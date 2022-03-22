@@ -93,9 +93,7 @@ The web UI (no matter what presentation technology it uses), will always receive
 ### - Could you use REST?
 Yes, but this is a web Game, not an API to a Game. This disctinction needs to be very clear. 
 
-### - This architeture is weid.
-
-No. It's not!
+### - This architeture is different of what I use.
 
 This architeture uses concepts of [DDD - Domain Drive design](https://www.dddcommunity.org/), where the *Domain* is the *heart of the software*. 
 
