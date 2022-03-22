@@ -20,7 +20,7 @@ This help us to see that the web framework here is not important as long as you 
 
  Both web applications uses the game logic implemented with pure OOP.
 
- The only external dependency is the usage of the annotation [@JsonbTransient](https://javaee.github.io/javaee-spec/javadocs/javax/json/bind/annotation/JsonbTransient.html) to avoid the `internal board` from the [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class to be serialized to Json.
+ The only external dependency is the usage of the annotation [@JsonbTransient](https://javaee.github.io/javaee-spec/javadocs/javax/json/bind/annotation/JsonbTransient.html) to avoid the `internal board` from the [Game](./backends/game-domain/src/main/java/com/rafabene/mancala/domain/Game.java) class to be serialized to JSON.
 
  From Eric Evans's [excellent book Domain Driven Design](https://www.amazon.com/gp/product/0321125215/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321125215&linkCode=as2&tag=martinfowlerc-20):
 
@@ -88,8 +88,24 @@ Once that both players are connected. Hit the `Start Game` button.
 ### - Why do you use Websockets?
 Because it's a game, and the state of the Game (and its pieces like Players, Board, etc) should be immediatly reflected for all players (and even viewers).
 
+The web UI (not matter what technology it uses), will always receive from the websocket, a JSON representation of the game state.
+
 ### - Could you use REST?
 Yes, but this is a web Game, not an API to a Game. This disctinction needs to be very clear. 
+
+### - This architeture is weid.
+
+No. It's not!
+
+This architeture uses concepts of [DDD - Domain Drive design](https://www.dddcommunity.org/), where the *Domain* is the *heart of the software*. 
+
+The domain lives in its [Bounded Context](https://martinfowler.com/bliki/BoundedContext.html). It's independent from other contexts and technologies. 
+
+Any other application layer that uses it, can expose the game behaviour with a thin layer (as showed with two different backends). 
+
+You can interact with this domain using REST, Websocket, TCP, Assynchronous messaging, etc; without changing a line of code to adapt the game to different applications.
+
+The game domain is independently testable and tested.
 
 ### - Why `Spring Boot` or why `Microprofile`?
 Because it shows that the web technology doesn't matter as long as the domain is well abstracted.
@@ -143,6 +159,10 @@ This is very welcomed!
 Software develpment is made through several iterations. Practices like [Refactoring](https://refactoring.com/) is useful to allow `"restructuring an existing body of code, altering its internal structure without changing its external behavior"`.
 
 > "Refactoring is your friend."
+
+### - Does the game works?
+
+Absolutely! Try it!
 
 ### - I have more questions.
 Please, contact me. I don't byte! ;)
