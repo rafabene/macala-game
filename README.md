@@ -125,7 +125,7 @@ The domain project user the `package per feature`. For more information read the
 
 ### - What if I need to add more features?
 
-This is a [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product#:~:text=A%20minimum%20viable%20product%20(MVP,and%20(ultimately)%20unnecessary%20work.) -  a version of a product with just enough features to be usable by early customers who can then provide feedback for future product development.
+This is a [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) -  a version of a product with just enough features to be usable by early customers who can then provide feedback for future product development.
 
 There are some principles that supports a MVP:
 
