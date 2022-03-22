@@ -110,7 +110,7 @@ Furthermore, I suggest you to read the article about [Anemic domain model](https
  >
  > (Martin Fowler)
 
-The hear of the software is in the [Game domain](#11-game-domain)
+The *heart* of the software is in the [Game domain](#11-game-domain)
 
 ### - Why do you organized the `packages` that way?
 
