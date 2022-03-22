@@ -123,5 +123,23 @@ There's no rule for packaging. You can have:
 
 The domain project user the `package per feature`. For more information read the following article: [Package by feature, not layer](http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
+### - What if I need to add more features?
+
+This is a [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product#:~:text=A%20minimum%20viable%20product%20(MVP,and%20(ultimately)%20unnecessary%20work.) -  a version of a product with just enough features to be usable by early customers who can then provide feedback for future product development.
+
+There are some principles that supports a MVP:
+
+ - [YAGNI](https://martinfowler.com/bliki/Yagni.html) - You Aren't Gonna Need It
+ 
+ and
+ 
+ - [Lean Software Development](https://en.wikipedia.org/wiki/Lean_software_development)
+
+### - What if I need to improve the code?
+
+This is very welcomed!
+
+Software develpment is made through several iterations. Practices like [Refactoring](https://refactoring.com/) is useful to allow `"restructuring an existing body of code, altering its internal structure without changing its external behavior"`.
+
 ### - I have more questions.
 Please, contact me ;)
