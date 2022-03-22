@@ -156,7 +156,7 @@ There are some principles that supports a MVP:
 
 Because the requirement does not ask for any kind of persistence. There's no reason to implement persistence if it is not needed at this moment.
 
-Check the question about [additional features](#-what-if-i-need-to-improve-the-code) above.
+Check the question about [additional features](#-what-if-i-need-to-add-more-features) above.
 
 ### - What are the `design patterns` used?
 
