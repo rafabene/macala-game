@@ -16,6 +16,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.GameConfiguration;
 import com.rafabene.mancala.domain.GameStatus;
 import com.rafabene.mancala.domain.IllegalGameStateException;
 import com.rafabene.mancala.domain.Player;
@@ -24,19 +25,31 @@ import com.rafabene.mancala.web.input.WebsocketInput;
 import com.rafabene.mancala.web.output.OutputEncoder;
 import com.rafabene.mancala.web.output.WebsocketOutput;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 @ServerEndpoint(value = "/game", encoders = OutputEncoder.class, decoders = { InputDecoder.class })
 @ApplicationScoped
 public class MacalaWebsocketServer {
 
     private Logger logger = Logger.getLogger(this.getClass().toString());
     
-    @Inject
     private Game game;
 
     private static Set<Session> sessions = new HashSet<>();
 
+    @Inject
+    @ConfigProperty(name = "stonesQuantity")
+    private int stonesQuantiy;
+
+    @Inject
+    @ConfigProperty(name = "pitsQuantity")
+    private int pitsQuantity;
+
     @OnOpen
     public void open(Session session) {
+        if (game == null){
+            game = new Game(new GameConfiguration(pitsQuantity, stonesQuantiy));
+        }
         sessions.add(session);
         logger.info("Session connected: " + session.getId());
         String sessionId = session.getId();

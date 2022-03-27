@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.json.bind.Jsonb;
 
 import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.GameConfiguration;
 import com.rafabene.mancala.domain.GameStatus;
 import com.rafabene.mancala.domain.IllegalGameStateException;
 import com.rafabene.mancala.domain.Player;
@@ -15,6 +16,7 @@ import com.rafabene.mancalagame.web.input.WebsocketInput;
 import com.rafabene.mancalagame.web.output.WebsocketOutput;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -25,16 +27,25 @@ public class MancalaWebsockeHandler extends TextWebSocketHandler {
 
     private Logger logger = Logger.getLogger(this.getClass().toString());
     
-    private Game game = new Game();
+    private Game game;
 
     private static Set<WebSocketSession> sessions = new HashSet<>();
 
     @Autowired
     private Jsonb jsonb;
 
+    @Value("${stonesQuantity}")
+    private int stonesQuantiy;
+
+    @Value("${pitsQuantity}")
+    private int pitsQuantity;
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        if (game == null){
+            game = new Game(new GameConfiguration(pitsQuantity, stonesQuantiy));
+        }
         sessions.add(session);
         logger.info("Session connected: " + session.getId());
         String sessionId = session.getId();
