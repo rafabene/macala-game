@@ -58,8 +58,8 @@ function updateGameScreen(gameInput) {
     let otherPits = document.getElementById("othePits").children
     let count = 5;
     for (let td of otherPits) {
-        if (td.id !== "otherMancala") {
-            td.innerHTML = gameData.opponentPlayerPits[count--]
+        if (td.id !== "otherMancala" && td.id !== "myMancala") {
+            td.innerHTML = gameData.opponentPlayerPits[count--].numberOfStones;
         }
     }
 
@@ -67,7 +67,7 @@ function updateGameScreen(gameInput) {
     let myPits = document.getElementById("myPits").children
     count = 0;
     for (let td of myPits) {
-       td.children[0].innerHTML = gameData.currentPlayerPits[count++]
+       td.children[0].innerHTML = gameData.currentPlayerPits[count++].numberOfStones;
     }
     let mymancala = document.getElementById("myMancala")
     mymancala.innerHTML = gameData.currentPlayerMancala

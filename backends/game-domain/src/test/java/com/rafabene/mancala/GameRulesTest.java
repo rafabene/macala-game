@@ -73,9 +73,9 @@ public class GameRulesTest {
     @Test
     public void testMovedPitItShouldBe0() throws IllegalGameMoveException, IllegalGameStateException {
         game.move(6);
-        assertEquals("Pit moved should be empty", 0, game.getBoard().getPlayer1Pits()[5]);
+        assertEquals("Pit moved should be empty", 0, game.getBoard().getPlayer1Pits()[5].getNumberOfStones());
         assertEquals("Macala should have it's first stone", 1, game.getBoard().getPlayer1Mancala().getContent());
-        assertEquals("Opponents pit should have a stone", 7, game.getBoard().getPlayer2Pits()[0]);
+        assertEquals("Opponents pit should have a stone", 7, game.getBoard().getPlayer2Pits()[0].getNumberOfStones());
     }
 
     /**
@@ -91,11 +91,11 @@ public class GameRulesTest {
         game.startGame();
         // Move all stones
         game.move(1);
-        assertEquals( "Pit 2 should be 6 after moving", 6, game.getBoard().getPlayer1Pits()[1]);
+        assertEquals( "Pit 2 should be 6 after moving", 6, game.getBoard().getPlayer1Pits()[1].getNumberOfStones());
         // Try to move an empty Stone
         game.move(1);
-        assertEquals( "Pit should be empty", 0, game.getBoard().getPlayer1Pits()[0]);
-        assertEquals("Pit 2 should be 6 after moving no stones to it", 6, game.getBoard().getPlayer1Pits()[1]);
+        assertEquals( "Pit should be empty", 0, game.getBoard().getPlayer1Pits()[0].getNumberOfStones());
+        assertEquals("Pit 2 should be 6 after moving no stones to it", 6, game.getBoard().getPlayer1Pits()[1].getNumberOfStones());
     }
 
     /**
@@ -135,13 +135,13 @@ public class GameRulesTest {
         game.addNewPlayer(player2);
         game.startGame();
         game.move(6);
-        assertEquals("Pit 6 should be 0", 0, game.getBoard().getPlayer1Pits()[5]);
+        assertEquals("Pit 6 should be 0", 0, game.getBoard().getPlayer1Pits()[5].getNumberOfStones());
         assertEquals("Player 1 Mancala should be 1", 1, game.getBoard().getPlayer1Mancala().getContent());
-        assertEquals("Player 2 pit should be 9", 11, game.getBoard().getPlayer2Pits()[5]);
+        assertEquals("Player 2 pit should be 9", 11, game.getBoard().getPlayer2Pits()[5].getNumberOfStones());
         assertEquals("Player 2 Mancala should be 0", 0, game.getBoard().getPlayer2Mancala().getContent() );
-        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[0]);
-        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[1]);
-        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[2]);
+        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[0].getNumberOfStones());
+        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[1].getNumberOfStones());
+        assertEquals("Player 1 Pit should reive a stone", 11, game.getBoard().getPlayer1Pits()[2].getNumberOfStones());
     }
 
     /**
@@ -155,10 +155,10 @@ public class GameRulesTest {
         game.move(1);
         assertEquals("Player 1 should play again", player1, game.getPlayerTurn());
         game.move(6);
-        assertEquals("Player 1[Pit 1] should be empty for the next test", 0, game.getBoard().getPlayer1Pits()[0]);
+        assertEquals("Player 1[Pit 1] should be empty for the next test", 0, game.getBoard().getPlayer1Pits()[0].getNumberOfStones());
         assertEquals("Player 2 should be the player now", player2, game.getPlayerTurn());
         game.move(1);
-        assertEquals("Player 1[Pit 1] should have 1 stone", 1, game.getBoard().getPlayer1Pits()[0]);
+        assertEquals("Player 1[Pit 1] should have 1 stone", 1, game.getBoard().getPlayer1Pits()[0].getNumberOfStones());
 
     }
 
@@ -175,9 +175,10 @@ public class GameRulesTest {
         game.addNewPlayer(player2);
         game.startGame();
         game.move(1);
-        assertEquals("Player 1[Pit 1] should have the captured stones", 15, game.getBoard().getPlayer1Pits()[0]);
-        assertEquals("Player 2[Pit 6] should have no stones (it has been captured", 0, game.getBoard().getPlayer2Pits()[5]);
-        assertEquals("Player 1 should play again", player1, game.getPlayerTurn());
+        assertEquals("Player 1[Pit 1] should have the captured stones", 15, game.getBoard().getPlayer1Pits()[0].getNumberOfStones());
+        assertEquals("Player 2[Pit 6] should have no stones (it has been captured", 0, game.getBoard().getPlayer2Pits()[5].getNumberOfStones());
+        assertEquals("Player 1 should play again", player1, game.getPlayerTurn())
+        ;
     }
 
     /**

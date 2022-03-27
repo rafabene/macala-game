@@ -10,6 +10,7 @@ import com.rafabene.mancala.domain.Game;
 import com.rafabene.mancala.domain.GameStatus;
 import com.rafabene.mancala.domain.IllegalGameMoveException;
 import com.rafabene.mancala.domain.IllegalGameStateException;
+import com.rafabene.mancala.domain.Pit;
 import com.rafabene.mancala.domain.Player;
 
 import org.junit.Before;
@@ -44,15 +45,15 @@ public class GameStateTest {
             Board board = game.getBoard();
             assertEquals("Player 1 Macala should be 0", 0, board.getPlayer1Mancala().getContent());
             assertEquals("Player 2 Macala should be 0", 0, board.getPlayer2Mancala().getContent());
-            int[] player1Pits = board.getPlayer1Pits();
-            int[] player2Pits = board.getPlayer1Pits();
+            Pit[] player1Pits = board.getPlayer1Pits();
+            Pit[] player2Pits = board.getPlayer1Pits();
             int pitsQuantity = game.getGameConfiguration().getNumberOfPits();
             int stonesQuantity = game.getGameConfiguration().getNumberOfStones();
             assertEquals("Player 1 Macala should have the right number of pits", pitsQuantity, player1Pits.length);
             assertEquals("Player 2 Macala should have the right number of pits", pitsQuantity, player2Pits.length);
             for (int i = 0; i < pitsQuantity; i++) {
-                    assertEquals("Player 1 pits should have the right number of stones", stonesQuantity, player1Pits[i]);
-                    assertEquals("Player 2 pits should have the right number of stones", stonesQuantity, player2Pits[i]);
+                    assertEquals("Player 1 pits should have the right number of stones", stonesQuantity, player1Pits[i].getNumberOfStones());
+                    assertEquals("Player 2 pits should have the right number of stones", stonesQuantity, player2Pits[i].getNumberOfStones());
             }
     }
 

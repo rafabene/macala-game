@@ -1,6 +1,7 @@
 package com.rafabene.mancala.web.output;
 
 import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.Pit;
 import com.rafabene.mancala.domain.Player;
 
 /**
@@ -31,7 +32,7 @@ public class WebsocketOutput {
         return this.message;
     }
 
-    public int[] getCurrentPlayerPits() {
+    public Pit[] getCurrentPlayerPits() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
             return game.getBoard().getPlayer1Pits();
@@ -49,7 +50,7 @@ public class WebsocketOutput {
         }
     }
 
-    public int[] getOpponentPlayerPits() {
+    public Pit[] getOpponentPlayerPits() {
         Player currentPlayer = getCurrentPlayer();
         if (currentPlayer == null || currentPlayer.equals(game.getPlayers()[0])) {
             return game.getBoard().getPlayer2Pits();

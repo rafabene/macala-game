@@ -86,8 +86,8 @@ public class Game {
         int sumPlayer1 = 0;
         int sumPlayer2 = 0;
         for (int x = 0; x < getBoard().getPlayer1Pits().length; x++) {
-            sumPlayer1 += internalBoard.getPlayer1Pits()[x];
-            sumPlayer2 += internalBoard.getPlayer2Pits()[x];
+            sumPlayer1 += internalBoard.getPlayer1Pits()[x].getNumberOfStones();
+            sumPlayer2 += internalBoard.getPlayer2Pits()[x].getNumberOfStones();
         }
         if (sumPlayer1 == 0 || sumPlayer2 == 0) {
             gameStatus = GameStatus.GAME_OVER;
@@ -198,9 +198,9 @@ public class Game {
             int pitsQuantity = getPitsQuantity();
             walkableBoard = new int[(pitsQuantity * 2) + 2];
             for (int x = 0; x < pitsQuantity; x++) {
-                walkableBoard[x] = getPlayerTurnPits()[x];
+                walkableBoard[x] = getPlayerTurnPits()[x].getNumberOfStones();
                 // +1 is needed to skip Player's Mancala on the last position
-                walkableBoard[x + pitsQuantity + 1] = getOpponentPits()[x];
+                walkableBoard[x + pitsQuantity + 1] = getOpponentPits()[x].getNumberOfStones();
             }
             walkableBoard[pitsQuantity] = getPlayerTurnMancala().getContent();
             // Last positon
@@ -270,10 +270,11 @@ public class Game {
             logger.info("Capturing opponent's stones. Last position: " + walkableBoardPosition);
             int currentPlayerLastPosition = walkableBoardPosition;
             int offset = getOpponentPits().length - 1 - currentPlayerLastPosition;
-            int stonesInOpponent = getOpponentPits()[offset];
+            int stonesInOpponent = getOpponentPits()[offset].getNumberOfStones();
             logger.info("Stones in Opponent's pit: " + stonesInOpponent);
-            getOpponentPits()[offset] = 0;
-            getPlayerTurnPits()[currentPlayerLastPosition] += stonesInOpponent;
+            getOpponentPits()[offset].setNumberOfStones(0);
+            int playerStones = getPlayerTurnPits()[currentPlayerLastPosition].getNumberOfStones();
+            getPlayerTurnPits()[currentPlayerLastPosition].setNumberOfStones(playerStones + stonesInOpponent);
         }
 
         /**
@@ -285,9 +286,9 @@ public class Game {
         private void fillInternalBoard() {
             int pitsQuantity = getPitsQuantity();
             for (int x = 0; x < pitsQuantity; x++) {
-                getPlayerTurnPits()[x] = walkableBoard[x];
+                getPlayerTurnPits()[x].setNumberOfStones(walkableBoard[x]);
                 // +1 to skip Player's Mancala
-                getOpponentPits()[x] = walkableBoard[x + pitsQuantity + 1];
+                getOpponentPits()[x].setNumberOfStones(walkableBoard[x + pitsQuantity + 1]);
             }
             // Player Mancala
             getPlayerTurnMancala().setContent(walkableBoard[pitsQuantity]);
@@ -295,7 +296,7 @@ public class Game {
             getOpponentMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
         }
 
-        private int[] getPlayerTurnPits() {
+        private Pit[] getPlayerTurnPits() {
             if (getPlayerTurn().equals(players[0])) {
                 return internalBoard.getPlayer1Pits();
             } else {
@@ -303,7 +304,7 @@ public class Game {
             }
         }
 
-        private int[] getOpponentPits() {
+        private Pit[] getOpponentPits() {
             if (getPlayerTurn().equals(players[0])) {
                 return internalBoard.getPlayer2Pits();
             } else {
