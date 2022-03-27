@@ -68,6 +68,12 @@ Start the aplication:
 
     npm start
 
+#### Defining a custom bakcend URL
+
+You can define a custom backend URL using the Environment Variable `BACKEND_URL`.
+
+    export BACKEND_URL="host:port"
+   
 
 ## Game instructions
 
@@ -79,8 +85,6 @@ Once that both players are connected. Hit the `Start Game` button.
 
 
 ## Improvements needed:
-
- - Modify the `frontend` to consume the backend from a parameterized address, so it can be deployed in a public address.
 
  - A `Game pool` can be added to allow more Games and players.
 

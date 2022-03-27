@@ -1,5 +1,5 @@
 window.onload = init
-let socket = new WebSocket("ws://localhost:8080/game")
+let socket = new WebSocket("ws://{{{ backend_url }}}/game")
 let gameData
 socket.onmessage = onMessage
 socket.onclose = serverDisconnected
