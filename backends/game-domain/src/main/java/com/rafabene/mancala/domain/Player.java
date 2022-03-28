@@ -1,8 +1,7 @@
 package com.rafabene.mancala.domain;
 
-import java.util.Objects;
-
 public class Player {
+    
     private int gamesWon;
 
     private int gamesLoose;
@@ -37,29 +36,4 @@ public class Player {
         return gamesWon;
     }
 
-    @Override
-    public String toString() {
-        return "Player {" +
-                "gamerId='" + getGamerId() + "'" +
-                ", gamesWon='" + getGamesWon() + "'" +
-                ", gamesLoose='" + getGamesLoose() + "'" +
-                "}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Player)) {
-            return false;
-        }
-        Player player = (Player) o;
-        return gamesWon == player.gamesWon && gamesLoose == player.gamesLoose
-                && Objects.equals(gamerId, player.gamerId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(gamesWon, gamesLoose, gamerId);
-    }
 }

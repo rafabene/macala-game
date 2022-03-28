@@ -1,18 +1,14 @@
 package com.rafabene.mancala.domain;
 
-import java.util.logging.Logger;
-
 import javax.json.bind.annotation.JsonbTransient;
 
 public class Game {
 
-    private Logger logger = Logger.getLogger(this.getClass().toString());
-
     private Player[] players = new Player[2];
 
-    private Board internalBoard;
-
     private GameStatus gameStatus = GameStatus.NOT_RUNNING;
+
+    private Board board;
 
     private Player winner;
 
@@ -26,7 +22,7 @@ public class Game {
 
     public Game(GameConfiguration configuration) {
         this.gameConfiguration = configuration;
-        internalBoard = new Board(
+        board = new Board(
                 gameConfiguration.getNumberOfPits(),
                 gameConfiguration.getNumberOfStones());
     }
@@ -70,15 +66,18 @@ public class Game {
         if (!gameStatus.equals(GameStatus.RUNNING)) {
             throw new IllegalGameStateException("Can't move if the game hasn't began. ");
         }
-        WalkableBoard walkableBoard = new WalkableBoard();
-        boolean playAgain = walkableBoard.move(pit);
+        boolean playAgain = new WalkableBoard(
+                this.getBoard(), 
+                this.getPlayers(), 
+                this.getPlayerTurn())
+            .move(pit);
 
         // Verify Game over before switching players
         verifyGameOver();
 
         // If player shouldn't play again
         if (!playAgain) {
-            changePlayerTurn();
+            switchPlayerTurn();
         }
     }
 
@@ -86,8 +85,8 @@ public class Game {
         int sumPlayer1 = 0;
         int sumPlayer2 = 0;
         for (int x = 0; x < getBoard().getPlayer1Pits().length; x++) {
-            sumPlayer1 += internalBoard.getPlayer1Pits()[x].getNumberOfStones();
-            sumPlayer2 += internalBoard.getPlayer2Pits()[x].getNumberOfStones();
+            sumPlayer1 += board.getPlayer1Pits()[x].getNumberOfStones();
+            sumPlayer2 += board.getPlayer2Pits()[x].getNumberOfStones();
         }
         if (sumPlayer1 == 0 || sumPlayer2 == 0) {
             gameStatus = GameStatus.GAME_OVER;
@@ -103,7 +102,7 @@ public class Game {
         }
     }
 
-    private void changePlayerTurn() {
+    private void switchPlayerTurn() {
         if (playerTurn.equals(players[0])) {
             playerTurn = players[1];
         } else {
@@ -153,7 +152,7 @@ public class Game {
 
     @JsonbTransient // Web doesn't need the internal board. We can make it transient in the Json
     public Board getBoard() {
-        return internalBoard;
+        return board;
     }
 
     public Player[] getPlayers() {
@@ -172,162 +171,5 @@ public class Game {
         return winner;
     }
 
-    /**
-     * 
-     * An Walkable board contains an array in the following format:
-     * 
-     * [p1, p1, p1, p1, mancala1, p2, p2, p2, p2, mancala2]
-     * 
-     * It's formed by player1Pits + player1Mancala + player2Pits + player2Mancala
-     * 
-     * This instance should be used for each move
-     * 
-     */
-    private class WalkableBoard {
-
-        private int[] walkableBoard;
-
-        private int getPitsQuantity() {
-            return internalBoard.getPlayer1Pits().length;
-        }
-
-        /**
-         * Creates an Walkable board using the information from the internalboard.
-         */
-        public WalkableBoard() {
-            int pitsQuantity = getPitsQuantity();
-            walkableBoard = new int[(pitsQuantity * 2) + 2];
-            for (int x = 0; x < pitsQuantity; x++) {
-                walkableBoard[x] = getPlayerTurnPits()[x].getNumberOfStones();
-                // +1 is needed to skip Player's Mancala on the last position
-                walkableBoard[x + pitsQuantity + 1] = getOpponentPits()[x].getNumberOfStones();
-            }
-            walkableBoard[pitsQuantity] = getPlayerTurnMancala().getContent();
-            // Last positon
-            walkableBoard[walkableBoard.length - 1] = getOpponentMancala().getContent();
-        }
-
-        /**
-         * Seed the stones in the pit informed in the parameter.
-         * 
-         * @param pit position of the pit: 1 to pitsQuantity
-         * @return true if the last positon is in current's player board
-         * @throws IllegalGameMoveException if the pit informed is greatter than
-         *                                  pitsQuantiy.
-         */
-        public boolean move(int pit) throws IllegalGameMoveException {
-            int pitsQuantity = getPitsQuantity();
-            int pitPosition = pit - 1;
-            if (pit < 1 || pit > pitsQuantity) {
-                throw new IllegalGameMoveException(String
-                        .format("Can't move pit %s because each player has only %s pits", pitPosition, pitsQuantity));
-            }
-            // Number of stones in the pit
-            int stones = walkableBoard[pitPosition];
-            // Remove all stones in the pit
-            walkableBoard[pitPosition] = 0;
-            int walkableBoardPosition = 0;
-            while (stones > 0) {
-                // Go to next pit
-                pitPosition++;
-
-                // Circular position
-                walkableBoardPosition = (int) (pitPosition) % walkableBoard.length;
-
-                // Skip opponnent's Mancala
-                if (walkableBoardPosition == walkableBoard.length - 1) {
-                    continue;
-                }
-
-                // Add a stone to the Pit
-                walkableBoard[walkableBoardPosition]++;
-                stones--;
-
-            }
-            fillInternalBoard();
-
-            logger.info(String.format("Last WalkablebBoard position: %s - Is this in current's player side: %s ",
-                    walkableBoardPosition, isThisPositionInCurrentsPlayerSide(walkableBoardPosition)));
-            /*
-             * If it's in current's player side,
-             * and it's not the Mancala
-             * and we have one stone
-             */
-            if (isThisPositionInCurrentsPlayerSide(walkableBoardPosition)
-                    && walkableBoardPosition != pitsQuantity
-                    && walkableBoard[walkableBoardPosition] == 1) {
-                captureOpponentStones(walkableBoardPosition);
-            }
-            return isThisPositionInCurrentsPlayerSide(walkableBoardPosition);
-        }
-
-        // Return true if we are in our side of the board after moving (pits + mancala)
-        private boolean isThisPositionInCurrentsPlayerSide(int walkableBoardPosition) {
-            return walkableBoardPosition <= getPitsQuantity();
-        }
-
-        private void captureOpponentStones(int walkableBoardPosition) {
-            logger.info("Capturing opponent's stones. Last position: " + walkableBoardPosition);
-            int currentPlayerLastPosition = walkableBoardPosition;
-            int offset = getOpponentPits().length - 1 - currentPlayerLastPosition;
-            int stonesInOpponent = getOpponentPits()[offset].getNumberOfStones();
-            logger.info("Stones in Opponent's pit: " + stonesInOpponent);
-            getOpponentPits()[offset].setNumberOfStones(0);
-            int playerStones = getPlayerTurnPits()[currentPlayerLastPosition].getNumberOfStones();
-            getPlayerTurnPits()[currentPlayerLastPosition].setNumberOfStones(playerStones + stonesInOpponent);
-        }
-
-        /**
-         * Get the walkable board in the format of
-         * [p1, p1, p1, p1, mancala1, p2, p2, p2, p2, mancala2]
-         * 
-         * and place the proper falues in the fields of the internal Board.
-         */
-        private void fillInternalBoard() {
-            int pitsQuantity = getPitsQuantity();
-            for (int x = 0; x < pitsQuantity; x++) {
-                getPlayerTurnPits()[x].setNumberOfStones(walkableBoard[x]);
-                // +1 to skip Player's Mancala
-                getOpponentPits()[x].setNumberOfStones(walkableBoard[x + pitsQuantity + 1]);
-            }
-            // Player Mancala
-            getPlayerTurnMancala().setContent(walkableBoard[pitsQuantity]);
-            // Last position for Opponents Mancala
-            getOpponentMancala().setContent(walkableBoard[(walkableBoard.length - 1)]);
-        }
-
-        private Pit[] getPlayerTurnPits() {
-            if (getPlayerTurn().equals(players[0])) {
-                return internalBoard.getPlayer1Pits();
-            } else {
-                return internalBoard.getPlayer2Pits();
-            }
-        }
-
-        private Pit[] getOpponentPits() {
-            if (getPlayerTurn().equals(players[0])) {
-                return internalBoard.getPlayer2Pits();
-            } else {
-                return internalBoard.getPlayer1Pits();
-            }
-        }
-
-        private Mancala getPlayerTurnMancala() {
-            if (getPlayerTurn().equals(players[0])) {
-                return internalBoard.getPlayer1Mancala();
-            } else {
-                return internalBoard.getPlayer2Mancala();
-            }
-        }
-
-        private Mancala getOpponentMancala() {
-            if (getPlayerTurn().equals(players[0])) {
-                return internalBoard.getPlayer2Mancala();
-            } else {
-                return internalBoard.getPlayer1Mancala();
-            }
-        }
-
-    }
 
 }
