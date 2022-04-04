@@ -18,6 +18,7 @@ import com.rafabene.mancalagame.web.output.WebsocketOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -92,6 +93,17 @@ public class MancalaWebsockeHandler extends TextWebSocketHandler {
                     notifySession(session, e.getMessage());
                 }
 	}
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        sessions.remove(session);
+        String sessionId = session.getId();
+        logger.info("Session diconnected: " + sessionId);
+        boolean wasPlaying = game.removePlayer(new Player(sessionId));
+        String message = wasPlaying ? String.format("Player %s disconnected. Game Stopped!", sessionId) : "";
+        // Notify all sesssions only if the the player was playing
+        notifySessions(message);
+    }
     
 
     private void notifySessions(String message) {

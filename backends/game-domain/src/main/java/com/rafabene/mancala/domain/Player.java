@@ -36,4 +36,36 @@ public class Player {
         return gamesWon;
     }
 
+    @Override
+    public String toString() {
+        return "Player [gamerId=" + gamerId + ", gamesLoose=" + gamesLoose + ", gamesWon=" + gamesWon + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((gamerId == null) ? 0 : gamerId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Player other = (Player) obj;
+        if (gamerId == null) {
+            if (other.gamerId != null)
+                return false;
+        } else if (!gamerId.equals(other.gamerId))
+            return false;
+        return true;
+    }
+
+    
+
 }

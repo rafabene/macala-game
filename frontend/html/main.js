@@ -16,7 +16,7 @@ function showMessage(message) {
 }
 
 function isGameRunning() {
-    return gameData.game.gameStatus === "RUNNING";
+    return gameData.gameStatus === "RUNNING";
 }
 
 function serverDisconnected(event) {
@@ -24,7 +24,7 @@ function serverDisconnected(event) {
 }
 
 function isPlayerTurn(player) {
-    return player.gamerId === gameData.game.playerTurn.gamerId
+    return player.gamerId === gameData.playerTurn.gamerId
 }
 
 function getUserButtons() {
@@ -37,11 +37,11 @@ function updateGameScreen(gameInput) {
     gameData = JSON.parse(gameInput)
     // Update Gamers
     let player1Div = document.getElementById("player1")
-    let player1String = getPlayerString(gameData.game.players[0], gameData.currentPlayer)
+    let player1String = getPlayerString(gameData.players[0], gameData.currentPlayer)
     player1Div.innerHTML = player1String
 
     let player2Div = document.getElementById("player2")
-    let player2String = getPlayerString(gameData.game.players[1], gameData.currentPlayer)
+    let player2String = getPlayerString(gameData.players[1], gameData.currentPlayer)
     player2Div.innerHTML = player2String
 
     //Show messages
@@ -49,7 +49,7 @@ function updateGameScreen(gameInput) {
 
     // Show Game Status
     let gameStatusDiv = document.getElementById("gameStatus")
-    gameStatusDiv.innerHTML = gameData.game.gameStatus;
+    gameStatusDiv.innerHTML = gameData.gameStatus;
 
     // Opponent Board
     let othermancala = document.getElementById("otherMancala")

@@ -26,6 +26,8 @@ public class Board {
         for(int x=0; x < player1Pits.length; x++){
             player1Pits[x] = new Pit(defaultNumberofStones);
             player2Pits[x] = new Pit(defaultNumberofStones);
+            player1Mancala = new Mancala();
+            player2Mancala = new Mancala();
         }
     }
 

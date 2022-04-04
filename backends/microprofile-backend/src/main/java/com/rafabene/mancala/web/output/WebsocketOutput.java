@@ -1,6 +1,7 @@
 package com.rafabene.mancala.web.output;
 
 import com.rafabene.mancala.domain.Game;
+import com.rafabene.mancala.domain.GameStatus;
 import com.rafabene.mancala.domain.Pit;
 import com.rafabene.mancala.domain.Player;
 
@@ -22,10 +23,6 @@ public class WebsocketOutput {
         this.currentSessionId = sessionId;
         this.game = game;
         this.message = message;
-    }
-
-    public Game getGame() {
-        return this.game;
     }
 
     public String getMessage() {
@@ -75,6 +72,19 @@ public class WebsocketOutput {
             }
         }
         return null;
+    }
+
+    public Player getPlayerTurn() {
+        return game.getPlayerTurn();
+    }
+
+
+    public Player[] getPlayers() {
+        return game.getPlayers();
+    }
+
+    public GameStatus getGameStatus(){
+        return game.getGameStatus();
     }
     
 }
